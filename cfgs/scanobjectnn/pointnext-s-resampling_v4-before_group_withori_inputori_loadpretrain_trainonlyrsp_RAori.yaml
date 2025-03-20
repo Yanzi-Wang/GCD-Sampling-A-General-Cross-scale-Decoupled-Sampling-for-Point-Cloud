@@ -1,0 +1,44 @@
+# FLOPs	GMACs	Params.(M)
+#  1.64	 0.81	 1.367
+# 2040.039810480711
+
+model:
+  NAME: BaseCls_Resampling
+  encoder_args:
+    NAME: PointNextEncoder_Resampling
+    blocks: [1, 1, 1, 1, 1, 1]
+    strides: [1, 2, 2, 2, 2, 1]
+    width: 32
+    in_channels: 4
+    sa_layers: 2
+    sa_use_res: True
+    radius: 0.15
+    radius_scaling: 1.5
+    nsample: 32
+    expansion: 4
+    aggr_args:
+      feature_type: 'dp_fj'
+      reduction: 'max'
+    group_args:
+      NAME: 'ballquery'
+      normalize_dp: True
+    conv_args:
+      order: conv-norm-act
+    act_args:
+      act: 'relu'
+    norm_args:
+      norm: 'bn'
+    resampler_args:
+      NAME: Resampler_v4
+      cd_loss_coef: 1
+      cd_with: origin
+      input_type: origin
+      ra_pooling_type: origin
+  cls_args: 
+    NAME: ClsHead
+    num_classes: 15
+    mlps: [512, 256]
+    norm_args: 
+      norm: 'bn1d'
+  load_pretrain: log/pointnext/scanobjectnn/scanobjectnn-train-pointnext-s-ngpus1-seed3125-20230530-185550-dujQUP8DxQAbNDDetaun6j/checkpoint/scanobjectnn-train-pointnext-s-ngpus1-seed3125-20230530-185550-dujQUP8DxQAbNDDetaun6j_ckpt_best.pth
+  train_only_resampler: True

@@ -1,0 +1,54 @@
+description: pointnext
+target:
+  service: sing
+  name: msroctovc
+
+environment:
+  image: jamekuma/pointnext_cls:latest
+  
+storage:
+  output:
+    storage_account_name: igsharestorage
+    container_name: v-jixiong
+    mount_dir: /mnt/output
+  input:
+    storage_account_name: igsharestorage
+    container_name: v-jixiong
+    mount_dir: /mnt/input
+code:
+  local_dir: .
+
+
+jobs:
+
+- name: modelnet40/0328_pointnext
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/modelnet40/0328_pointnext.sh
+
+- name: modelnet40/0328_pointnext_resampling_before_group
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/modelnet40/0328_pointnext_resampling_before_group.sh
+
+- name: modelnet40/0328_pointmlp
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/modelnet40/0328_pointmlp.sh
+
+- name: modelnet40/0328_pointmlp_resampling_before_group
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/modelnet40/0328_pointmlp_resampling_before_group.sh

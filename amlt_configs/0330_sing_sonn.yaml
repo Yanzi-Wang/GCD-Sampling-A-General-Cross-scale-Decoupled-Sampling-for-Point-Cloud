@@ -1,0 +1,73 @@
+description: pointnext
+target:
+  service: sing
+  name: msroctovc
+
+environment:
+  image: jamekuma/pointnext_cls:latest
+  
+storage:
+  output:
+    storage_account_name: igsharestorage
+    container_name: v-jixiong
+    mount_dir: /mnt/output
+  input:
+    storage_account_name: igsharestorage
+    container_name: v-jixiong
+    mount_dir: /mnt/input
+code:
+  local_dir: .
+
+
+jobs:
+
+- name: scanobjnn/pointnext
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/scanobjnn/pointnext.sh
+
+- name: scanobjnn/pointnext_resampling_before_group
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/scanobjnn/pointnext_resampling_before_group.sh
+
+- name: scanobjnn/pointnext_resampling_before_group_move_loss
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/scanobjnn/pointnext_resampling_before_group_move_loss.sh
+
+
+
+- name: scanobjnn/pointmlp
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/scanobjnn/pointmlp.sh
+
+- name: scanobjnn/pointmlp_resampling_before_group
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/scanobjnn/pointmlp_resampling_before_group.sh
+
+- name: scanobjnn/pointmlp_resampling_before_group_move_loss
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/scanobjnn/pointmlp_resampling_before_group_move_loss.sh
+

@@ -1,0 +1,38 @@
+description: pointnext
+target:
+  service: sing
+  name: msroctovc
+
+environment:
+  image: jamekuma/pointnext_cls:latest
+  
+storage:
+  output:
+    storage_account_name: igsharestorage
+    container_name: v-jixiong
+    mount_dir: /mnt/output
+  input:
+    storage_account_name: igsharestorage
+    container_name: v-jixiong
+    mount_dir: /mnt/input
+code:
+  local_dir: .
+
+
+jobs:
+
+# - name: 0321_pointnext_resampling
+#   sku: G1
+#   preemptible: False
+  priority: High
+  # azml_int: True
+#   command:
+#   - bash my_scripts/0321_pointnext_resampling.sh
+
+- name: 0325_pointnext_resampling_before_group
+  sku: G1
+  preemptible: False
+  priority: High
+  # azml_int: True
+  command:
+  - bash my_scripts/0325_pointnext_resampling_before_group.sh
